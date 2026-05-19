@@ -1,0 +1,86 @@
+version: 1
+
+# E-commerce example: 5 bounded contexts
+# Run `besa generate` in this directory to scaffold all files.
+
+contexts:
+  catalog:
+    aggregates: [product]
+  cart:
+    aggregates: [cart]
+    cross_context_reads:
+      - context: catalog
+        via: ProductReadService        # cart fetches product info (price, availability)
+  order:
+    aggregates: [order]
+    cross_context_reads:
+      - context: cart
+        via: CartReadService           # order reads cart contents at checkout
+  shipping:
+    aggregates: [shipment]
+    cross_context_reads:
+      - context: order
+        via: OrderReadService          # shipping reads order info when creating shipment
+  identity:
+    aggregates: [user]
+
+aggregates:
+  product:
+    root: Product
+    entities: [ProductImage]
+    context: catalog
+  cart:
+    root: Cart
+    entities: [CartProduct]
+    context: cart
+  order:
+    root: Order
+    entities: [PurchasedProduct]
+    context: order
+  shipment:
+    root: Shipment
+    entities: [ShipmentProduct]
+    context: shipping
+  user:
+    root: User
+    entities: []
+    context: identity
+
+use-cases:
+  catalog/get-product:
+    context: catalog
+    type: query
+    aggregates: [product]
+
+  cart/add-product:
+    context: cart
+    type: mutation
+    aggregates: [cart]
+    cross_context_reads: [catalog]
+
+  cart/get-cart:
+    context: cart
+    type: query
+    aggregates: [cart]
+
+  order/checkout:
+    context: order
+    type: mutation
+    aggregates: [order]
+    cross_context_reads: [cart]
+
+  order/get-purchase-history:
+    context: order
+    type: query
+    aggregates: [order]
+
+  shipping/create-shipment:
+    context: shipping
+    type: mutation
+    aggregates: [shipment]
+    cross_context_reads: [order]
+
+  shipping/get-shipment-status:
+    context: shipping
+    type: query
+    aggregates: [shipment]

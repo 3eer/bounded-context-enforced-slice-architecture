@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json.schemastore.org/eslintrc",
+  "plugins": [
+    "boundaries"
+  ],
+  "settings": {
+    "boundaries/elements": [
+      {
+        "type": "catalog-context",
+        "pattern": "src/contexts/catalog/**"
+      },
+      {
+        "type": "cart-context",
+        "pattern": "src/contexts/cart/**"
+      },
+      {
+        "type": "order-context",
+        "pattern": "src/contexts/order/**"
+      },
+      {
+        "type": "shipping-context",
+        "pattern": "src/contexts/shipping/**"
+      },
+      {
+        "type": "identity-context",
+        "pattern": "src/contexts/identity/**"
+      },
+      {
+        "type": "payments-context",
+        "pattern": "src/contexts/payments/**"
+      },
+      {
+        "type": "infra",
+        "pattern": "src/infra/**"
+      },
+      {
+        "type": "besa-generated",
+        "pattern": "src/besa-generated/**"
+      },
+      {
+        "type": "shared",
+        "pattern": "src/_shared/**"
+      }
+    ]
+  },
+  "rules": {
+    "boundaries/element-types": [
+      "error",
+      {
+        "default": "disallow",
+        "rules": [
+          {
+            "from": "catalog-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "cart-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "order-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "shipping-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "identity-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "payments-context",
+            "allow": [
+              "besa-generated",
+              "shared"
+            ]
+          },
+          {
+            "from": "infra",
+            "allow": [
+              "besa-generated"
+            ]
+          },
+          {
+            "from": "besa-generated",
+            "allow": []
+          },
+          {
+            "from": "shared",
+            "allow": []
+          }
+        ]
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": "error"
+  }
+}
